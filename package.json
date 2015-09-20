@@ -1,0 +1,19 @@
+{
+  "name": "2048",
+  "version": "1.0.0",
+  "description": "2048 game",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "2048",
+    "game"
+  ],
+  "author": "shen",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-sass": "^2.0.4"
+  }
+}

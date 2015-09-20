@@ -1,0 +1,51 @@
+body {
+  font-size: 14px; }
+
+.container {
+  width: 500px;
+  margin: 10px auto; }
+  .container .header .header-info > div {
+    float: left; }
+  .container .header .header-info div.title {
+    width: 60%; }
+    .container .header .header-info div.title h1 {
+      font-size: 5em;
+      font-weight: 800;
+      color: #333; }
+  .container .header .header-info div.score, .container .header .header-info div.best {
+    width: 18%;
+    margin-left: 2%;
+    text-align: center;
+    background-color: #a99;
+    font-size: 1.1em;
+    color: #eee;
+    line-height: 1.5; }
+    .container .header .header-info div.score p, .container .header .header-info div.best p {
+      font-size: 1.8em;
+      color: #fff; }
+  .container .header .header-op {
+    text-align: right; }
+    .container .header .header-op button {
+      padding: 10px 15px;
+      font-size: 1.2em;
+      color: #fff;
+      background-color: #766;
+      cursor: pointer; }
+  .container .main {
+    margin: 10px 0;
+    position: relative;
+    width: 500px;
+    height: 500px;
+    border-radius: 10px;
+    background-color: #aaa; }
+    .container .main div.cell {
+      position: absolute;
+      border-radius: 5px;
+      background-color: #bbb;
+      text-align: center;
+      line-height: 100px;
+      font-size: 3em;
+      -webkit-transition: top 0.15s ease, left 0.15s ease;
+      -ms-transition: top 0.15s ease, left 0.15s ease;
+      -moz-transition: top 0.15s ease, left 0.15s ease;
+      transition: top 0.15s ease, left 0.15s ease; }
