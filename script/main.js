@@ -5,24 +5,38 @@ var cellAttr = {
     spacing: '4%'
 }
 var numCells = [], score = 0, bestScore = 0;
-numCells.moved = false;
-for(var i = 0; i < 4; i++) {
-    numCells[i] = [];
-    for(var j = 0; j < 4; j++) {
-        numCells[i][j] = {
-            top: '0',
-            left: '0',
-            num: 0,
-            color: '#111',
-            bgc: '#eee4da',
-            merged: false
+
+if(window.localStorage.getItem('numCells')) {
+    numCells = JSON.parse(window.localStorage.getItem('numCells'));
+} else {
+    for(var i = 0; i < 4; i++) {
+        numCells[i] = [];
+        for(var j = 0; j < 4; j++) {
+            numCells[i][j] = {
+                top: '0',
+                left: '0',
+                num: 0,
+                color: '#111',
+                bgc: '#eee4da',
+                merged: false
+            }
         }
     }
 }
 
+if(window.localStorage.getItem('score')) {
+    var scoreObj = JSON.parse(window.localStorage.getItem('score'));
+    score = scoreObj.score;
+    bestScore = scoreObj.bestScore;
+}
 
 generateBgCells();
-intialNewGame();
+if(scoreObj) {
+    refreshView();
+    updateScore();
+} else {
+    intialNewGame();
+}
 
 document.querySelector('.header button.new').addEventListener('click', intialNewGame, false);
 
@@ -52,6 +66,11 @@ window.addEventListener('keydown', function (event) {
             numCells.moved = false;
         }, 150);
     }
+}, false);
+
+window.addEventListener('unload', function () {
+    window.localStorage.setItem('score', JSON.stringify({score: score, bestScore: bestScore}));
+    window.localStorage.setItem('numCells', JSON.stringify(numCells));
 }, false);
 
 // 初始化生成背景 cells
