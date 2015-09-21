@@ -36,6 +36,11 @@ body {
                 p {
                     font-size: 1.8em;
                     color: #fff;
+                    @media (max-width: 500px) {
+                        & {
+                            font-size: 1.4em;
+                        }
+                    }
                 }
             }
         }
@@ -79,6 +84,7 @@ body {
             @media (max-width: 500px) {
                 & {
                     line-height: 3.8rem;
+                    font-size: 1.8em;
                 }
             }
         }

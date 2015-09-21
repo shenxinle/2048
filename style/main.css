@@ -28,6 +28,9 @@ body {
       .container .header .header-info div.score p, .container .header .header-info div.best p {
         font-size: 1.8em;
         color: #fff; }
+        @media (max-width: 500px) {
+          .container .header .header-info div.score p, .container .header .header-info div.best p {
+            font-size: 1.4em; } }
     .container .header .header-op {
       text-align: right; }
       .container .header .header-op button {
@@ -61,7 +64,8 @@ body {
       transition: top 0.15s ease, left 0.15s ease; }
       @media (max-width: 500px) {
         .container .main div.cell {
-          line-height: 3.8rem; } }
+          line-height: 3.8rem;
+          font-size: 1.8em; } }
     .container .main div.finish {
       position: absolute;
       width: 100%;
