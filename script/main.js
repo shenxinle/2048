@@ -43,6 +43,7 @@ if(scoreObj) {
 *  事件绑定：
 *  New Game 按钮初始化新游戏
 *  上下左右方向键进行游戏
+*  移动端滑动进行游戏
 *  离开页面时 localStorage numCells and score
 */
 document.querySelector('.header button.new').addEventListener('click', intialNewGame, false);
