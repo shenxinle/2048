@@ -4,8 +4,10 @@ var cellAttr = {
     width: '20%',
     spacing: '4%'
 }
+// numCells 用于记录 16 个 cells 的数字、背景色等信息
 var numCells = [], score = 0, bestScore = 0;
 
+// 从 localStorage 读取保存的数据 或者 初始化
 if(window.localStorage.getItem('numCells')) {
     numCells = JSON.parse(window.localStorage.getItem('numCells'));
 } else {
@@ -23,7 +25,6 @@ if(window.localStorage.getItem('numCells')) {
         }
     }
 }
-
 if(window.localStorage.getItem('score')) {
     var scoreObj = JSON.parse(window.localStorage.getItem('score'));
     score = scoreObj.score;
@@ -38,9 +39,17 @@ if(scoreObj) {
     intialNewGame();
 }
 
+/*
+*  事件绑定：
+*  New Game 按钮初始化新游戏
+*  上下左右方向键进行游戏
+*  离开页面时 localStorage numCells and score
+*/
 document.querySelector('.header button.new').addEventListener('click', intialNewGame, false);
-
 window.addEventListener('keydown', function (event) {
+    if(numCells.moving) {
+        return;
+    }
     // console.log(event);
     switch(event.keyCode) {
         case 37: // left arrow
@@ -58,16 +67,19 @@ window.addEventListener('keydown', function (event) {
         default:
             break;
     }
-    if(event.keyCode >= 37 && event.keyCode <= 40 && numCells.moved) {
+    if(event.keyCode >= 37 && event.keyCode <= 40 && numCells.moving) {
         updateScore();
         setTimeout(function () {
             generateNewNum();
             refreshView();
-            numCells.moved = false;
-        }, 150);
+            numCells.moving = false;
+
+            if(checkGameOver()) {
+                gameOver();
+            }
+        }, 160);
     }
 }, false);
-
 window.addEventListener('unload', function () {
     window.localStorage.setItem('score', JSON.stringify({score: score, bestScore: bestScore}));
     window.localStorage.setItem('numCells', JSON.stringify(numCells));
@@ -93,6 +105,7 @@ function generateBgCells() {
     document.querySelector('.main .grid-container').appendChild(cells);
 }
 
+// 开始新游戏
 function intialNewGame() {
     for(var i = 0; i < 4; i++) {
         for(var j = 0; j < 4; j++) {
@@ -106,10 +119,12 @@ function intialNewGame() {
     score = 0;
     updateScore();
 
+    document.querySelector('.main .finish').style.display = 'none';
     // console.log(emptyNumCells);
     // console.log(numCells);
 }
 
+// 在没有数字的区域随机生成新数字 2 或者 4
 function generateNewNum() {
     var emptyNumCells = [];
     for(var i = 0; i < 4; i++) {
@@ -119,13 +134,17 @@ function generateNewNum() {
             }
         }
     }
+    if(!emptyNumCells.length) {
+        return false;
+    }
     var index = Math.floor(Math.random() * emptyNumCells.length);
-    var num = Math.random() > 0.33 ? 2 : 4;
+    var num = Math.random() > 0.33 ? 2 : 2;
     numCells[emptyNumCells[index].i][emptyNumCells[index].j].num = num;
     numCells[emptyNumCells[index].i][emptyNumCells[index].j].bgc = getNumberBgc(num);
-    emptyNumCells.splice(index, 1);
+    // emptyNumCells.splice(index, 1);
 }
 
+// 根据 numCells 刷新游戏界面
 function refreshView() {
     var container = document.querySelector('.main .title-container');
     var cells = document.createDocumentFragment();
@@ -149,6 +168,7 @@ function refreshView() {
     container.appendChild(cells);
 }
 
+// 上下左右方向键逻辑
 function swipeLeft() {
     for(var i = 0; i < 4; i++) {
         for(var j = 1; j < 4; j++) {
@@ -254,6 +274,7 @@ function swipeBottom() {
     }
 }
 
+// 数字移动，动画用 transition
 function moveTo(fromi, fromj, toi, toj) {
     if(fromi === toi && fromj === toj) {
         return;
@@ -267,9 +288,10 @@ function moveTo(fromi, fromj, toi, toj) {
     cell.style.top = numCells[toi][toj].top;
     cell.style.left = numCells[toi][toj].left;
 
-    numCells.moved = true;
+    numCells.moving = true;
 }
 
+// 数字合并
 function merge(fromi, fromj, toi, toj) {
     numCells[toi][toj].num += numCells[fromi][fromj].num;
     numCells[toi][toj].bgc = getNumberBgc(numCells[toi][toj].num);
@@ -284,14 +306,60 @@ function merge(fromi, fromj, toi, toj) {
         bestScore = score;
     }
 
-    numCells.moved = true;
+    numCells.moving = true;
 }
 
+// 更新分数
 function updateScore() {
     document.querySelector('.header .score .score-num').textContent = score;
     document.querySelector('.header .best .best-num').textContent = bestScore;
 }
 
+// 判断游戏是否结束, 所有相邻数字不相等，且都不为0
+function checkGameOver() {
+    for(var i = 0; i < 4; i++) {
+        for(var j = 0; j < 4; j++) {
+            if(i === 3 && j===3) {
+                if(numCells[i][j].num === 0) {
+                    return false;
+                }
+            } else if (i === 3) {
+                if(numCells[i][j].num === numCells[i][j+1].num || numCells[i][j].num === 0) {
+                    return false;
+                }
+            } else if (j === 3) {
+                if(numCells[i][j].num === numCells[i+1][j].num || numCells[i][j].num === 0) {
+                    return false;
+                }
+            } else {
+                if(numCells[i][j].num === numCells[i][j+1].num || numCells[i][j].num === numCells[i+1][j].num || numCells[i][j].num === 0) {
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+
+// 游戏结束
+function gameOver() {
+    var finish = document.querySelector('.main .finish');
+    finish.querySelector('.score').textContent = score;
+    finish.style.display = 'block';
+
+    finish.querySelector('.back').addEventListener('click', function back() {
+        finish.style.display = 'none';
+        this.removeEventListener('click', back, false);
+    }, false);
+
+    finish.querySelector('.new').addEventListener('click', function newGame() {
+        finish.style.display = 'none';
+        intialNewGame();
+        this.removeEventListener('click', newGame, false);
+    }, false);
+}
+
+// 不同数字对应的背景色设置
 function getNumberBgc(number){
     switch(number){
         case 2: return '#eee4da';

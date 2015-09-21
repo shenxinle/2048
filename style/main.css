@@ -49,3 +49,34 @@ body {
       -ms-transition: top 0.15s ease, left 0.15s ease;
       -moz-transition: top 0.15s ease, left 0.15s ease;
       transition: top 0.15s ease, left 0.15s ease; }
+    .container .main div.finish {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: none; }
+      .container .main div.finish .shade {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        background-color: rgba(0, 0, 0, 0.5); }
+      .container .main div.finish .content {
+        position: absolute;
+        width: 100%;
+        top: 40%;
+        text-align: center;
+        color: #fff; }
+        .container .main div.finish .content h1 {
+          font-size: 2.5em;
+          line-height: 1.5; }
+        .container .main div.finish .content .op button {
+          margin-top: 1em;
+          padding: 10px 15px;
+          border-radius: 5px;
+          background-color: #988;
+          opacity: .9;
+          color: #fff;
+          font-size: 1.2em;
+          font-weight: 500;
+          cursor: pointer; }
+          .container .main div.finish .content .op button:first-child {
+            margin-right: 3em; }
