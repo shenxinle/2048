@@ -80,6 +80,39 @@ window.addEventListener('keydown', function (event) {
         }, 160);
     }
 }, false);
+touch(document.querySelector('.main'), function (touchObj) {
+    if(numCells.moving) {
+        return;
+    }
+    switch(touchObj.swipeDir) {
+        case 'swipeLeft': // left arrow
+            swipeLeft();
+            break;
+        case 'swipeTop': // up arrow
+            swipeTop();
+            break;
+        case 'swipeRight': // right arrow
+            swipeRight();
+            break;
+        case 'swipeBottom': // down arrow
+            swipeBottom();
+            break;
+        default:
+            break;
+    }
+    if(touchObj.swipeDir && numCells.moving) {
+        updateScore();
+        setTimeout(function () {
+            generateNewNum();
+            refreshView();
+            numCells.moving = false;
+
+            if(checkGameOver()) {
+                gameOver();
+            }
+        }, 160);
+    }
+});
 window.addEventListener('unload', function () {
     window.localStorage.setItem('score', JSON.stringify({score: score, bestScore: bestScore}));
     window.localStorage.setItem('numCells', JSON.stringify(numCells));

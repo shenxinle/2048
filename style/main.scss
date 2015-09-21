@@ -5,8 +5,14 @@ body {
 .container {
     width: $containerWidth;
     margin: 10px auto;
+    @media (max-width: 500px) {
+        & {
+            width: 100%;
+        }
+    }
 
     .header {
+        padding: 0 10px;
         .header-info {
             & > div {
                 float: left;
@@ -52,6 +58,13 @@ body {
         height: $containerWidth;
         border-radius: 10px;
         background-color: #aaa;
+        @media (max-width: 500px) {
+            & {
+                width: 19rem;
+                height: 19rem;
+                left: .5rem;
+            }
+        }
         div.cell {
             position: absolute;
             border-radius: 5px;
@@ -63,6 +76,11 @@ body {
             -ms-transition: top .15s ease, left .15s ease;
             -moz-transition: top .15s ease, left .15s ease;
             transition: top .15s ease, left .15s ease;
+            @media (max-width: 500px) {
+                & {
+                    line-height: 3.8rem;
+                }
+            }
         }
         div.finish {
             position: absolute;
