@@ -138,7 +138,7 @@ function generateNewNum() {
         return false;
     }
     var index = Math.floor(Math.random() * emptyNumCells.length);
-    var num = Math.random() > 0.33 ? 2 : 2;
+    var num = Math.random() > 0.33 ? 2 : 4;
     numCells[emptyNumCells[index].i][emptyNumCells[index].j].num = num;
     numCells[emptyNumCells[index].i][emptyNumCells[index].j].bgc = getNumberBgc(num);
     // emptyNumCells.splice(index, 1);
@@ -150,6 +150,7 @@ function refreshView() {
     var cells = document.createDocumentFragment();
     for(var i = 0; i < 4; i++) {
         for(var j = 0; j < 4; j++) {
+            numCells[i][j].merged = false;
             if(numCells[i][j].num > 0) {
                 var cell = document.createElement('div');
                 cell.style.width = cellAttr.width;
@@ -295,6 +296,7 @@ function moveTo(fromi, fromj, toi, toj) {
 function merge(fromi, fromj, toi, toj) {
     numCells[toi][toj].num += numCells[fromi][fromj].num;
     numCells[toi][toj].bgc = getNumberBgc(numCells[toi][toj].num);
+    numCells[toi][toj].merged = true;
     numCells[fromi][fromj].num = 0;
 
     var cell = document.querySelector('.title-container .cell-' + fromi + '-' +fromj);
