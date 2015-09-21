@@ -17,6 +17,8 @@ function touch(dom, callback) {
     }
 
     function touchmove(e) {
+        e.preventDefault();
+
         end.x = e.touches[0].clientX;
         end.y = e.touches[0].clientY;
         end.time = (new Date()).getTime();
