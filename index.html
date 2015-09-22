@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="discription" content="2048 game">
     <title>2048</title>
+    <script>
+        document.documentElement.style.fontSize = parseFloat(Math.min(document.documentElement.clientWidth, screen.width) / 20) + 'px'; // 移动端 firefox document.documentElement.clientWidth = 980
+    </script>
     <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="style/normalize.css">
     <link rel="stylesheet" href="style/main.css">
-    <script>
-        document.documentElement.style.fontSize = parseFloat(document.documentElement.clientWidth / 20) + 'px';
-    </script>
 </head>
 <body>
     <div class="container">
@@ -54,6 +54,6 @@
 
 <script src="script/touch.js"></script>
 <script src="script/main.js"></script>
-<!-- <script src="http://114.90.111.210:8080/target/target-script-min.js#anonymous"></script> -->
+<!-- <script src="http://10.26.135.214:8080/target/target-script-min.js#anonymous"></script> -->
 </body>
 </html>
