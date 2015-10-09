@@ -20,7 +20,8 @@ if(window.localStorage.getItem('numCells')) {
                 num: 0,
                 color: '#111',
                 bgc: '#eee4da',
-                merged: false
+                merged: false,      // 标记刚合并数字
+                generated: false    // 标记刚生成数字
             }
         }
     }
@@ -111,7 +112,7 @@ touch(document.querySelector('.main'), function (touchObj) {
             if(checkGameOver()) {
                 gameOver();
             }
-        }, 160);
+        }, 150);
     }
 });
 window.addEventListener('unload', function () {
@@ -175,6 +176,7 @@ function generateNewNum() {
     var num = Math.random() > 0.33 ? 2 : 4;
     numCells[emptyNumCells[index].i][emptyNumCells[index].j].num = num;
     numCells[emptyNumCells[index].i][emptyNumCells[index].j].bgc = getNumberBgc(num);
+    numCells[emptyNumCells[index].i][emptyNumCells[index].j].generated = true;
     // emptyNumCells.splice(index, 1);
 }
 
@@ -184,7 +186,6 @@ function refreshView() {
     var cells = document.createDocumentFragment();
     for(var i = 0; i < 4; i++) {
         for(var j = 0; j < 4; j++) {
-            numCells[i][j].merged = false;
             if(numCells[i][j].num > 0) {
                 var cell = document.createElement('div');
                 cell.style.width = cellAttr.width;
@@ -194,9 +195,20 @@ function refreshView() {
                 cell.style.color = numCells[i][j].color;
                 cell.style.backgroundColor = numCells[i][j].bgc;
                 cell.innerHTML = numCells[i][j].num;
-                cell.className = 'cell cell-' + i + '-' +j;
+                cell.className = 'cell cell-' + i + '-' +j + (numCells[i][j].merged ? ' merged' : '');
+                if (numCells[i][j].generated) {
+                    cell.className += ' hide';
+                    (function (cell) {
+                        setTimeout(function () {
+                            cell.className = cell.className.replace('hide', '') + ' generated';
+                        }, 100);
+                    }(cell));
+                }
+
                 cells.appendChild(cell);
             }
+            numCells[i][j].merged = false;
+            numCells[i][j].generated = false;
         }
     }
     container.innerHTML = '';
